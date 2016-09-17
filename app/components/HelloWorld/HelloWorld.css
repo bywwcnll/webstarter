@@ -1,0 +1,9 @@
+
+.h1{
+	font-size: 1.2rem;
+}
+
+a{ 
+    transition : transform 1s;
+    box-sizing: border-box;
+}
