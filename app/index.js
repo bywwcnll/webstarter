@@ -5,6 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import Login from './components/Login/Login'
+import News from './components/News/News'
 import { store } from './store/store'
 import $ from 'jquery'
 // import {setstate} from './actions/actions';
@@ -21,7 +22,7 @@ const get163 = (store)=>{
 
 render(
     <Provider store={ store }>
-        <Login setInfo={ get163 } />
+        <News />
     </Provider>,
     document.querySelector("#app")
 );

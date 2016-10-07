@@ -26,12 +26,12 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel',
                 query: {
-                    presets: ['es2015','react']
+                    presets: ['es2015','react','stage-0']
                 }
             },
             {
                 test: /\.css$/,
-                loader: 'style!css'
+                loader: 'style!css!postcss'
             }
         ]
     },
@@ -39,7 +39,7 @@ module.exports = {
         return [
             require('autoprefixer'),
             require('cssnano'),
-            // require('postcss-pxtorem')
+            require('postcss-cssnext')
         ];
     },
     plugins: [
