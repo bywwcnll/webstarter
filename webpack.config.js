@@ -30,16 +30,17 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
-                loader: 'style!css!postcss'
+                test: /\.s?css$/,
+                loader: 'style!css?modules!postcss'
             }
         ]
     },
     postcss: function () {
         return [
-            require('autoprefixer'),
-            require('cssnano'),
-            require('postcss-cssnext')
+            // require('autoprefixer'),
+            // require('cssnano'),
+            require('postcss-cssnext'),
+            // require('postcss-pxtorem'),
         ];
     },
     plugins: [
