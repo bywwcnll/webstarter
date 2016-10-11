@@ -2,7 +2,6 @@
  * Created by Gaven on 2016/9/12.
  */
 var webpack = require('webpack');
-var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -11,7 +10,6 @@ module.exports = {
     },
     output: {
         path: 'build',
-        // publicPath: '/build/',
         filename: 'bundle.js'
     },
 
@@ -44,17 +42,22 @@ module.exports = {
         ];
     },
     plugins: [
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     },
-        //     output: {
-        //         comments: false
-        //     }
-        // }),
+        // https://webpack.github.io/docs/list-of-plugins.html
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'app/index.html'
-        })
+            template: './index.html'
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin()
     ]
 };
+
+if (process.env.NODE_ENV === 'production') {
+    module.exports.plugins = module.exports.plugins.concat(
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    );
+
+}
