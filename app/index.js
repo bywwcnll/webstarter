@@ -5,6 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import News from './components/News/News'
+import Login from './components/Login/Login'
 import { store } from './store/store'
 // import {setstate} from './actions/actions';
 // console.log(store.getState());

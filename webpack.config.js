@@ -29,7 +29,7 @@ module.exports = {
             },
             {
                 test: /\.s?css$/,
-                loader: 'style!css?modules!postcss'
+                loader: 'style!css!postcss'
             }
         ]
     },
@@ -38,7 +38,7 @@ module.exports = {
             // require('autoprefixer'),
             // require('cssnano'),
             require('postcss-cssnext'),
-            // require('postcss-pxtorem'),
+            require('postcss-plugin-px2rem'),
         ];
     },
     plugins: [
