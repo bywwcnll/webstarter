@@ -7,12 +7,13 @@ class NewsListItem extends Component{
         super(props);
     }
     render(){
+        let item = this.props.item;
         return(
             <div className="cellC">
-                <img src={this.props.imgsrc} alt=""/>
+                <img src={item.imgsrc} alt=""/>
                 <div className="txtC">
-                    <p className="title">{this.props.title}</p>
-                    <p className="digest">{this.props.digest}...</p>
+                    <p className="title">{item.title}</p>
+                    <p className="digest">{item.digest}...</p>
                 </div>
             </div>
         )

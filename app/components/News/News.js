@@ -5,6 +5,7 @@ import fetchJsonp from 'fetch-jsonp'
 import { ListView, ActivityIndicator } from 'antd-mobile'
 
 class News extends Component {
+    rData = [];
     constructor(props) {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -12,20 +13,13 @@ class News extends Component {
             pageNum: 0,
             animating: false,
             firstLoaded: false,
-            news: ds.cloneWithRows([])
+            news: ds.cloneWithRows(this.rData)
         };
     }
-    componentWillMount(){
-        this.fetchNews();
-    }
-    componentDidUpdate(){
-        // console.log('componentDidUpdate')
-    }
     getUrl(){
-        return 'http://3g.163.com/touch/reconstruct/article/list/BA8D4A3Rwangning/'+(this.state.pageNum*10+1)+'-'+(this.state.pageNum+1)*10+'.html';
+        return 'http://3g.163.com/touch/reconstruct/article/list/BA8D4A3Rwangning/'+(this.state.pageNum*10+1)+'-10.html';
     }
     fetchNews(){
-        console.log(this.getUrl());
         this.setState({ animating: true });
         fetchJsonp(this.getUrl(),{
             jsonpCallbackFunction: 'artiList'
@@ -33,19 +27,38 @@ class News extends Component {
             return response.json();
         }).then(json => {
             setTimeout(() => {
+                this.rData = this.rData.concat(json.BA8D4A3Rwangning);
                 this.setState({
                     pageNum: ++this.state.pageNum,
                     animating: false,
-                    news: this.state.news.cloneWithRows(json.BA8D4A3Rwangning)
+                    news: this.state.news.cloneWithRows(this.rData)
                 });
             }, 1000);
         }).catch(e => {
             console.log(e.message)
         });
     }
-    onEndReached(event){
-        console.log(this.state.pageNum);
+    componentWillMount(){
+        // console.log('componentWillMount');
         this.fetchNews();
+    }
+    // componentWillReceiveProps(){
+    //     console.log('componentWillReceiveProps')
+    // }
+    // componentWillUpdate(){
+    //     console.log('componentWillUpdate')
+    // }
+    // componentDidUpdate(){
+    //     console.log('componentDidUpdate')
+    // }
+    onEndReached(event){
+        if(this.state.firstLoaded && !this.state.animating){
+            this.fetchNews();
+        }else if(!this.state.firstLoaded){
+            this.setState({
+                firstLoaded: true
+            });
+        }
     }
     render(){
         const separator = (sectionID, rowID) => (
@@ -61,13 +74,13 @@ class News extends Component {
             <div>
                 <ListView
                     dataSource={this.state.news}
-                    renderRow={(item)=>
-                        <NewsListItem key={item.docid} title={item.title} digest={item.digest} imgsrc={item.imgsrc}></NewsListItem>
+                    renderRow={(rowData, sectionID, rowID)=>
+                        <NewsListItem key={rowID} item={rowData}></NewsListItem>
                     }
                     useBodyScroll
                     renderSeparator={separator}
-                    pageSize={10}
-                    onEndReachedThreshold={100}
+                    pageSize={5} //渲染的频率
+                    onEndReachedThreshold={50}
                     onEndReached={this.onEndReached.bind(this)}
                 ></ListView>
                 <ActivityIndicator

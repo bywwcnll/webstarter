@@ -1,23 +1,19 @@
 
 .cellC{
-  font-family: "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  //font-family: "Microsoft YaHei", Helvetica, Arial, sans-serif;
   display: flex;
   align-items: center;
   padding: 8Px;
   border-bottom: 1Px solid #ddd;
   & img{
     width: 80Px;
+    min-width: 80Px;
   }
   & .txtC{
     margin-left: 8Px;
-    min-width: 0;
     & .title{
       font-size: 32px;
       color: #000;
-      //text-overflow: ellipsis;
-      //white-space: nowrap;
-      //overflow: hidden;
-      //width:100%
     }
     & .digest{
       font-size: 24px;
