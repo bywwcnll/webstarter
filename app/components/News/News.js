@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import NewsListItem from './NewsListItem'
 import fetchJsonp from 'fetch-jsonp'
 import { ListView, ActivityIndicator } from 'antd-mobile'
+import './News.scss'
 
 class News extends Component {
     rData = [];
@@ -62,13 +63,7 @@ class News extends Component {
     }
     render(){
         const separator = (sectionID, rowID) => (
-            <div key={`${sectionID}-${rowID}`} style={{
-                backgroundColor: '#F5F5F9',
-                height: 8,
-                borderTop: '1px solid #ECECED',
-                borderBottom: '1px solid #ECECED',
-            }}
-            />
+            <div key={`${sectionID}-${rowID}`} className="newsSeparator"/>
         );
         return(
             <div>
@@ -80,7 +75,7 @@ class News extends Component {
                     useBodyScroll
                     renderSeparator={separator}
                     pageSize={5} //渲染的频率
-                    onEndReachedThreshold={50}
+                    onEndReachedThreshold={100}
                     onEndReached={this.onEndReached.bind(this)}
                 ></ListView>
                 <ActivityIndicator

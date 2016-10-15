@@ -4,7 +4,7 @@
 
 import * as types from '../actions/actionTypes';
 
-export const reducer = (state='dft', action) => {
+export const reducer = (state, action) => {
     switch (action.type) {
         case types.SET_STATE: return state=action.payload;
         default: return state;

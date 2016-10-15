@@ -4,17 +4,19 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { Router, Route, browserHistory } from 'react-router'
 import News from './components/News/News'
+import NewsDetail from './components/News/NewsDetail'
 import Login from './components/Login/Login'
 import { store } from './store/store'
-// import {setstate} from './actions/actions';
-// console.log(store.getState());
-// store.dispatch(setstate('hehe'));
-// console.log(store.getState());
 
 render(
     <Provider store={ store }>
-        <News />
+        <Router history={ browserHistory }>
+            <Route path="/" component={ News }/>
+            <Route path="/login" component={ Login }/>
+            <Route path="/detail" component={ NewsDetail }/>
+        </Router>
     </Provider>,
     document.querySelector("#app")
 );

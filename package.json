@@ -1,16 +1,16 @@
 {
-  "name": "ui",
+  "name": "webstarter",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create Html5 APP By React",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --host 0.0.0.0",
-    "build": "cross-env NODE_ENV=production && webpack --progress"
+    "build": "cross-env NODE_ENV=production webpack --progress"
   },
   "author": "gaven",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^6.4.1",
+    "antd-mobile": "^0.9.2",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-antd": "^0.5.1",
@@ -19,27 +19,22 @@
     "babel-preset-stage-0": "^6.16.0",
     "cross-env": "^3.1.2",
     "css-loader": "^0.25.0",
-    "cssnano": "^3.7.4",
     "fetch-jsonp": "^1.0.2",
     "html-webpack-plugin": "^2.22.0",
-    "less": "^2.7.1",
-    "less-loader": "^2.2.3",
     "postcss": "^5.2.0",
     "postcss-cssnext": "^2.8.0",
     "postcss-loader": "^0.13.0",
     "postcss-plugin-px2rem": "^0.6.0",
-    "postcss-pxtorem": "^3.3.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
     "shelljs": "^0.7.4",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.1"
   },
-  "dependencies": {
-    "antd-mobile": "^0.9.0",
-    "react-redux": "^4.4.5",
-    "redux": "^3.6.0"
-  }
+  "dependencies": {}
 }

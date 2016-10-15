@@ -35,10 +35,8 @@ module.exports = {
     },
     postcss: function () {
         return [
-            // require('autoprefixer'),
-            // require('cssnano'),
             require('postcss-cssnext'),
-            require('postcss-plugin-px2rem'),
+            require('postcss-plugin-px2rem')
         ];
     },
     plugins: [
@@ -52,12 +50,20 @@ module.exports = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.plugins = module.exports.plugins.concat(
+    module.exports.devtool = '#source-map'; //添加打包后的map文件，便于以后调试
+    module.exports.plugins = module.exports.plugins.concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
         new webpack.optimize.UglifyJsPlugin({
+            output: {
+                comments: false
+            },
             compress: {
                 warnings: false
             }
-        })
-    );
-
+        }),
+    ]);
 }
