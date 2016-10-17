@@ -1,42 +1,28 @@
 
 import React, { Component } from 'react'
 import NewsListItem from './NewsListItem'
-import fetchJsonp from 'fetch-jsonp'
 import { ListView, ActivityIndicator } from 'antd-mobile'
+import { store } from '../../store/store'
+import * as actions from '../../actions/actions';
 import './News.scss'
 
 class News extends Component {
-    rData = [];
     constructor(props) {
         super(props);
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            pageNum: 0,
             animating: false,
-            firstLoaded: false,
-            news: ds.cloneWithRows(this.rData)
+            firstLoaded: false, //防止第一次加载页面后就触发的onEndReached事件
+            news: ds.cloneWithRows(store.getState().news.rData)
         };
-    }
-    getUrl(){
-        return 'http://3g.163.com/touch/reconstruct/article/list/BA8D4A3Rwangning/'+(this.state.pageNum*10+1)+'-10.html';
     }
     fetchNews(){
         this.setState({ animating: true });
-        fetchJsonp(this.getUrl(),{
-            jsonpCallbackFunction: 'artiList'
-        }).then(response => {
-            return response.json();
-        }).then(json => {
-            setTimeout(() => {
-                this.rData = this.rData.concat(json.BA8D4A3Rwangning);
-                this.setState({
-                    pageNum: ++this.state.pageNum,
-                    animating: false,
-                    news: this.state.news.cloneWithRows(this.rData)
-                });
-            }, 1000);
-        }).catch(e => {
-            console.log(e.message)
+        store.dispatch(actions.fetchfun()).then(()=>{
+            this.setState({
+                animating: false,
+                news: this.state.news.cloneWithRows(store.getState().news.rData)
+            });
         });
     }
     componentWillMount(){
