@@ -8,12 +8,21 @@ export const reducer = (state={
     news: {
         pageNum: 0,
         rData: []
+    },
+    loading: {
+        isShow: false
     }
 }, action) => {
     switch (action.type) {
-        case types.SET_STATE:
-            return state=action.payload;
-        case types.GET_NEWS:
+        case types.OPEN_LOADING:
+            return {...state, loading: {
+                isShow: true
+            }};
+        case types.CLOSE_LOADING:
+            return {...state, loading: {
+                isShow: false
+            }};
+        case types.RECEIVED_NEWS:
             return {...state, news: {
                 pageNum: state.news.pageNum+1,
                 rData: state.news.rData.concat(action.listData)

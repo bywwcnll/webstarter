@@ -1,50 +1,44 @@
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import NewsListItem from './NewsListItem'
+import Loading from '../Loading/Loading'
 import { ListView, ActivityIndicator } from 'antd-mobile'
 import { store } from '../../store/store'
 import * as actions from '../../actions/actions';
 import './News.scss'
 
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+let firstLoaded = false;    //防止第一次加载页面后就触发的onEndReached事件
 class News extends Component {
     constructor(props) {
         super(props);
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            animating: false,
-            firstLoaded: false, //防止第一次加载页面后就触发的onEndReached事件
-            news: ds.cloneWithRows(store.getState().news.rData)
-        };
     }
-    fetchNews(){
-        this.setState({ animating: true });
-        store.dispatch(actions.fetchfun()).then(()=>{
-            this.setState({
-                animating: false,
-                news: this.state.news.cloneWithRows(store.getState().news.rData)
-            });
-        });
+    // componentWillMount(){
+    //     console.log('componentWillMount');
+    // }
+    componentDidMount(){
+        this.props.fetchNews();
+        // console.log('componentDidMount');
     }
-    componentWillMount(){
-        // console.log('componentWillMount');
-        this.fetchNews();
-    }
-    // componentWillReceiveProps(){
+    // componentWillReceiveProps(nextProps){
     //     console.log('componentWillReceiveProps')
+    //     console.log(nextProps.loadingState);
     // }
-    // componentWillUpdate(){
+    // componentWillUpdate(nextProps){
     //     console.log('componentWillUpdate')
+    //     console.log(nextProps.loadingState);
     // }
-    // componentDidUpdate(){
+    // componentDidUpdate(nextProps){
     //     console.log('componentDidUpdate')
     // }
     onEndReached(event){
-        if(this.state.firstLoaded && !this.state.animating){
-            this.fetchNews();
-        }else if(!this.state.firstLoaded){
-            this.setState({
-                firstLoaded: true
-            });
+        if(!this.props.loadingState){
+            if(firstLoaded){
+                this.props.fetchNews();
+            }else{
+                firstLoaded = true;
+            }
         }
     }
     render(){
@@ -54,24 +48,34 @@ class News extends Component {
         return(
             <div>
                 <ListView
-                    dataSource={this.state.news}
+                    dataSource={this.props.dataSource}
                     renderRow={(rowData, sectionID, rowID)=>
                         <NewsListItem key={rowID} item={rowData}></NewsListItem>
                     }
                     useBodyScroll
                     renderSeparator={separator}
-                    pageSize={5} //渲染的频率
                     onEndReachedThreshold={100}
                     onEndReached={this.onEndReached.bind(this)}
                 ></ListView>
-                <ActivityIndicator
-                    toast
-                    text="正在加载"
-                    animating={this.state.animating}
-                />
+                <Loading />
             </div>
         );
     }
 }
 
-export default News
+const mapStateToProps = (state, ownProps)=>{
+    return {
+        dataSource: ds.cloneWithRows(state.news.rData),
+        loadingState: state.loading.isShow
+    }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        fetchNews: ()=>{
+            dispatch(actions.getNews())
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(News)
